@@ -281,14 +281,14 @@ const Req = new TelegrafStatelessQuestion('requesting',async ctx => {
             )
     }else{
         ctx.deleteMessage()
-        ctx.replyWithMarkdown(`❌Failed request try again\n use *@imdb* inline and enter query`)
+        ctx.replyWithMarkdown(`❌Failed request try again\n use *@apkdl_bot* inline and enter query`)
     }
         
 })
 bot.use(Req.middleware())
 
 bot.hears('📥Request',(ctx)=>{
-    text = `🎉 use *@imdb* inline and enter query`
+    text = `🎉 use *@apkdl_bot* inline and enter query`
     return Req.replyWithMarkdown(ctx,text)
 })
 
