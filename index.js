@@ -456,6 +456,34 @@ bot.command('update', async (ctx) => {
     }
 })
 
+bot.on('document', async(ctx) => {
+            document = ctx.message.document
+            console.log(ctx);
+            fileDetails = {
+                file_name: document.file_name,
+                userId: ctx.from.id,
+                file_id: document.file_id,
+                caption: ctx.message.caption,
+                file_size: document.file_size,
+                uniqueId: document.file_unique_id
+            }
+            await saver.checkBan(`${ctx.from.id}`).then((res) => {
+                console.log(res);
+                if (res == true) {
+                    ctx.reply('⚠YOU ARE BANNED FOR MISUSING BOT, CONTACT ADMIN')
+                } else {
+                    saver.saveFile(fileDetails)
+                    ctx.reply(`https://t.me/${process.env.BOTUSERNAME}?start=${document.file_unique_id}`)
+                    ctx.replyWithDocument(document.file_id, {
+                        chat_id: process.env.LOG_CHANNEL,
+                        caption: `${ctx.message.caption}\n\n\nfrom:${ctx.from.id}\nfirstName:${ctx.from.first_name}\nfile_id:${document.file_id}`
+
+                    })
+                }
+            })
+
+        })
+
 //getting list of all added contents
 
 bot.command('list', async (ctx) => {
