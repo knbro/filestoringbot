@@ -60,7 +60,12 @@ bot.start(async (ctx) => {
 
     }
     adminHelper.saveUser(userData)
-
+    
+//DEFINING POP CALLBACK
+bot.action('POP', (ctx) => {
+    ctx.deleteMessage()
+    ctx.reply('Send me a file 🙂')
+})
     //checking if admin and providing admin keyboard to manage requests,help etc
     if (ctx.from.id == process.env.ADMIN) {
         return await ctx.reply('❤Hello my Admin', Markup.keyboard(
