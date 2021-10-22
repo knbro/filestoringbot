@@ -6,6 +6,7 @@ const bot = new Telegraf(process.env.TOKEN)
 const db = require('./config/connecton')
 const collection = require('./config/collection')
 const adminHelper = require('./helper/adminHelper')
+const saver = require('./database/fstorebot')
 
 
 //DATABASE CONNECTION 
