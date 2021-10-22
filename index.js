@@ -355,27 +355,33 @@ bot.command('send', async (ctx) => {
 
 //getting file_id on sending document to bot
 
-bot.on('document', (ctx) => {
-    document = ctx.message.document
-    file_id = document.file_id
-    fileDetails ={
-        file_name:document.file_name,
-        file_id:document.file_id,
-        caption:ctx.message.caption,
-        file_size:document.file_size,
-        uniqueId:document.file_unique_id
-    }
+bot.on('document', async(ctx) => {
+            document = ctx.message.document
+            console.log(ctx);
+            fileDetails = {
+                file_name: document.file_name,
+                userId: ctx.from.id,
+                file_id: document.file_id,
+                caption: ctx.message.caption,
+                file_size: document.file_size,
+                uniqueId: document.file_unique_id
+            }
+            await saver.checkBan(`${ctx.from.id}`).then((res) => {
+                console.log(res);
+                if (res == true) {
+                    ctx.reply('⚠YOU ARE BANNED FOR MISUSING BOT, CONTACT ADMIN')
+                } else {
+                    saver.saveFile(fileDetails)
+                    ctx.reply(`https://t.me/${process.env.BOTUSERNAME}?start=${document.file_unique_id}`)
+                    ctx.replyWithDocument(document.file_id, {
+                        chat_id: process.env.LOG_CHANNEL,
+                        caption: `${ctx.message.caption}\n\n\nfrom:${ctx.from.id}\nfirstName:${ctx.from.first_name}\nfile_id:${document.file_id}`
 
-    if (ctx.from.id == process.env.ADMIN) {
-        ctx.reply(file_id)
-        adminHelper.saveFileInline(fileDetails)
-    } else {
-        ctx.reply('🚫better send files to your personal chat')
-    }
+                    })
+                }
+            })
 
-
-})
-
+        })
 bot.on('audio',(ctx)=>{
     console.log(ctx.message.audio);
     audio = ctx.message.audio
@@ -461,33 +467,7 @@ bot.command('update', async (ctx) => {
     }
 })
 
-bot.on('document', async(ctx) => {
-            document = ctx.message.document
-            console.log(ctx);
-            fileDetails = {
-                file_name: document.file_name,
-                userId: ctx.from.id,
-                file_id: document.file_id,
-                caption: ctx.message.caption,
-                file_size: document.file_size,
-                uniqueId: document.file_unique_id
-            }
-            await saver.checkBan(`${ctx.from.id}`).then((res) => {
-                console.log(res);
-                if (res == true) {
-                    ctx.reply('⚠YOU ARE BANNED FOR MISUSING BOT, CONTACT ADMIN')
-                } else {
-                    saver.saveFile(fileDetails)
-                    ctx.reply(`https://t.me/${process.env.BOTUSERNAME}?start=${document.file_unique_id}`)
-                    ctx.replyWithDocument(document.file_id, {
-                        chat_id: process.env.LOG_CHANNEL,
-                        caption: `${ctx.message.caption}\n\n\nfrom:${ctx.from.id}\nfirstName:${ctx.from.first_name}\nfile_id:${document.file_id}`
 
-                    })
-                }
-            })
-
-        })
 
 //getting list of all added contents
 
