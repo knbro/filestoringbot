@@ -44,8 +44,8 @@ bot.start(async (ctx) => {
                 parse_mode: 'HTML',
                 reply_markup: {
                     inline_keyboard: [
-                        [{ text: '🔎Search',switch_inline_query:''}]
-                    ]
+                        [{ text: 'Search 🔎', switch_inline_query: '' }, { text: 'Link 🔗', callback_data: 'POP' }]
+                ]
                 }
 
             })
